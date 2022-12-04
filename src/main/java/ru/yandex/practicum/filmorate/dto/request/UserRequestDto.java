@@ -13,13 +13,13 @@ import java.time.LocalDate;
 public class UserRequestDto {
     String name;
 
-    @NotBlank
-    @Email
+    @Email(message = "email должен соответствовать формату Email")
+    @NotBlank(message = "email не должен быть пустым")
     String email;
 
-    @NotBlank
+    @NotBlank(message = "login не должен быть пустым")
     String login;
 
-    @NotNull
+    @NotNull(message = "birthday не должен быть null")
     LocalDate birthday;
 }
