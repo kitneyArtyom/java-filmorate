@@ -8,5 +8,5 @@ public class FilmResponseDto {
     String name;
     String description;
     String releaseDate;
-    String duration;
+    Integer duration;
 }

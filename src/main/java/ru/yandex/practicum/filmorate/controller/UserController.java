@@ -48,6 +48,11 @@ public class UserController {
     public UserResponseDto createUser(@RequestBody @Valid @NotNull UserRequestDto userDto) {
         User user = userMapper.mapToUser(userDto);
         user.setId(idsCount++);
+
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+
         users.put(user.getId(), user);
 
         log.trace("create user: [{}] {}", user.getId(), user.getLogin());
@@ -63,6 +68,31 @@ public class UserController {
 
         User user = userMapper.mapToUser(userDto);
         user.setId(id);
+
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+
+        users.put(user.getId(), user);
+
+        log.trace("update user: [{}] {}", user.getId(), user.getLogin());
+
+        return userMapper.mapToUserResponse(user);
+    }
+
+    //Для postman тестов
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public UserResponseDto anotherUpdateUser(@RequestBody @Valid @NotNull UserRequestDto userDto) {
+        User user = userMapper.mapToUser(userDto);
+
+        if (!users.containsKey(user.getId())) {
+            throw new NotFoundException("user not found");
+        }
+
+        if (user.getName() == null || user.getName().isEmpty()) {
+            user.setName(user.getLogin());
+        }
+
         users.put(user.getId(), user);
 
         log.trace("update user: [{}] {}", user.getId(), user.getLogin());

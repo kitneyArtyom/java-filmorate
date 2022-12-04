@@ -68,4 +68,20 @@ public class FilmController {
 
         return filmMapper.mapToFilmResponse(film);
     }
+
+    // Для postman тестов
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public FilmResponseDto anotherUpdateFilm(@Valid @NotNull @RequestBody FilmRequestDto filmDto) {
+        Film film = filmMapper.mapToFilm(filmDto);
+
+        if (!films.containsKey(film.getId())) {
+            throw new NotFoundException("film not found");
+        }
+
+        films.put(film.getId(), film);
+
+        log.trace("update film: [{}] {}", film.getId(), film.getName());
+
+        return filmMapper.mapToFilmResponse(film);
+    }
 }

@@ -9,6 +9,9 @@ import java.time.LocalDate;
 @Data
 @FilmConstraint
 public class FilmRequestDto {
+    @Min(0)
+    Integer id;
+
     @NotBlank(message = "name не должен быть пустым")
     String name;
 
