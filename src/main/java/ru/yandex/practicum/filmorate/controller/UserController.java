@@ -21,15 +21,13 @@ import java.util.stream.Collectors;
 @RestController
 @Validated
 @RequestMapping(
-        path="/users",
+        path = "/users",
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
-
-    UserMapper userMapper;
-
-    Map<Integer, User> users;
-    int idsCount;
+    private final UserMapper userMapper;
+    private final Map<Integer, User> users;
+    private int idsCount;
 
     public UserController(UserMapper userMapper) {
         this.userMapper = userMapper;
@@ -54,7 +52,6 @@ public class UserController {
         }
 
         users.put(user.getId(), user);
-
         log.trace("create user: [{}] {}", user.getId(), user.getLogin());
 
         return userMapper.mapToUserResponse(user);
@@ -74,7 +71,6 @@ public class UserController {
         }
 
         users.put(user.getId(), user);
-
         log.trace("update user: [{}] {}", user.getId(), user.getLogin());
 
         return userMapper.mapToUserResponse(user);
@@ -94,7 +90,6 @@ public class UserController {
         }
 
         users.put(user.getId(), user);
-
         log.trace("update user: [{}] {}", user.getId(), user.getLogin());
 
         return userMapper.mapToUserResponse(user);

@@ -10,19 +10,19 @@ import java.time.LocalDate;
 @FilmConstraint
 public class FilmRequestDto {
     @Min(0)
-    Integer id;
+    private Integer id;
 
     @NotBlank(message = "name не должен быть пустым")
-    String name;
+    private String name;
 
     @Size(max = 200, message = "description недолжен превыщать длину в 200 символов")
     @NotBlank(message = "description не должен быть пустым")
-    String description;
+    private String description;
 
     @NotNull(message = "releaseDate не должен быть null")
-    LocalDate releaseDate;
+    private LocalDate releaseDate;
 
     @Min(value = 1, message = "duration должен больше нуля")
     @NotNull(message = "duration не должен быть null")
-    Integer duration;
+    private Integer duration;
 }

@@ -15,7 +15,6 @@ public class FilmConstraintValidator implements ConstraintValidator<FilmConstrai
     @Override
     public boolean isValid(FilmRequestDto filmDto, ConstraintValidatorContext constraintValidatorContext) {
         constraintValidatorContext.disableDefaultConstraintViolation();
-
         boolean isReleaseDateValid = filmDto.getReleaseDate() == null || filmDto.getReleaseDate().isAfter(BIRTHDAY_FILMS);
 
         if (!isReleaseDateValid) {

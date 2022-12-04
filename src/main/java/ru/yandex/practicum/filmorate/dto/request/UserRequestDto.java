@@ -13,17 +13,17 @@ import java.time.LocalDate;
 @UserConstraint
 public class UserRequestDto {
     @Min(0)
-    Integer id;
+    private Integer id;
 
-    String name;
+    private String name;
 
     @Email(message = "email должен соответствовать формату Email")
     @NotBlank(message = "email не должен быть пустым")
-    String email;
+    private String email;
 
     @NotBlank(message = "login не должен быть пустым")
-    String login;
+    private String login;
 
     @NotNull(message = "birthday не должен быть null")
-    LocalDate birthday;
+    private LocalDate birthday;
 }

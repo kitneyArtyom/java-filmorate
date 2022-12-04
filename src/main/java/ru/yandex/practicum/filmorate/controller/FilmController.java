@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.request.FilmRequestDto;
 import ru.yandex.practicum.filmorate.dto.resonse.FilmResponseDto;
@@ -19,16 +18,11 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(
-        path = "/films",
-        consumes = MediaType.ALL_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/films", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 public class FilmController {
-
-    FilmMapper filmMapper;
-
-    Map<Integer, Film> films;
-    int idsCount;
+    private final FilmMapper filmMapper;
+    private final Map<Integer, Film> films;
+    private int idsCount;
 
     public FilmController(FilmMapper filmMapper) {
         this.films = new HashMap<>();
@@ -38,9 +32,7 @@ public class FilmController {
 
     @GetMapping
     public List<FilmResponseDto> getFilms() {
-        return films.values().stream()
-                .map(filmMapper::mapToFilmResponse)
-                .collect(Collectors.toList());
+        return films.values().stream().map(filmMapper::mapToFilmResponse).collect(Collectors.toList());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -48,7 +40,6 @@ public class FilmController {
         Film film = filmMapper.mapToFilm(filmDto);
         film.setId(idsCount++);
         films.put(film.getId(), film);
-
         log.trace("create film: [{}] {}", film.getId(), film.getName());
 
         return filmMapper.mapToFilmResponse(film);
@@ -63,7 +54,6 @@ public class FilmController {
         Film film = filmMapper.mapToFilm(filmDto);
         film.setId(id);
         films.put(film.getId(), film);
-
         log.trace("update film: [{}] {}", film.getId(), film.getName());
 
         return filmMapper.mapToFilmResponse(film);
@@ -79,9 +69,7 @@ public class FilmController {
         }
 
         films.put(film.getId(), film);
-
         log.trace("update film: [{}] {}", film.getId(), film.getName());
-
         return filmMapper.mapToFilmResponse(film);
     }
 }
