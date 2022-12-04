@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping(
         path = "/films",
@@ -47,6 +49,8 @@ public class FilmController {
         film.setId(idsCount++);
         films.put(film.getId(), film);
 
+        log.trace("create film: [{}] {}", film.getId(), film.getName());
+
         return filmMapper.mapToFilmResponse(film);
     }
 
@@ -59,6 +63,8 @@ public class FilmController {
         Film film = filmMapper.mapToFilm(filmDto);
         film.setId(id);
         films.put(film.getId(), film);
+
+        log.trace("update film: [{}] {}", film.getId(), film.getName());
 
         return filmMapper.mapToFilmResponse(film);
     }

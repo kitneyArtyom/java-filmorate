@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @Validated
 @RequestMapping(
@@ -48,6 +50,8 @@ public class UserController {
         user.setId(idsCount++);
         users.put(user.getId(), user);
 
+        log.trace("create user: [{}] {}", user.getId(), user.getLogin());
+
         return userMapper.mapToUserResponse(user);
     }
 
@@ -60,6 +64,8 @@ public class UserController {
         User user = userMapper.mapToUser(userDto);
         user.setId(id);
         users.put(user.getId(), user);
+
+        log.trace("update user: [{}] {}", user.getId(), user.getLogin());
 
         return userMapper.mapToUserResponse(user);
     }
