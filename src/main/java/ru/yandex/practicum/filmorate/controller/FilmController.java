@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.dto.request.FilmRequestDto;
 import ru.yandex.practicum.filmorate.dto.resonse.FilmResponseDto;
@@ -8,6 +9,8 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.mapper.FilmMapper;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +30,7 @@ public class FilmController {
 
     public FilmController(FilmMapper filmMapper) {
         this.films = new HashMap<>();
-        this.idsCount = 0;
+        this.idsCount = 1;
         this.filmMapper = filmMapper;
     }
 
@@ -39,14 +42,16 @@ public class FilmController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createFilm(@RequestBody FilmRequestDto filmDto) {
+    public FilmResponseDto createFilm(@Valid @NotNull @RequestBody FilmRequestDto filmDto) {
         Film film = filmMapper.mapToFilm(filmDto);
         film.setId(idsCount++);
         films.put(film.getId(), film);
+
+        return filmMapper.mapToFilmResponse(film);
     }
 
     @PutMapping(path = "/{id:.+}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateFilm(@RequestBody FilmRequestDto filmDto, @PathVariable Integer id) {
+    public FilmResponseDto updateFilm(@Valid @NotNull @RequestBody FilmRequestDto filmDto, @PathVariable Integer id) {
         if (!films.containsKey(id)) {
             throw new NotFoundException("film not found");
         }
@@ -54,5 +59,7 @@ public class FilmController {
         Film film = filmMapper.mapToFilm(filmDto);
         film.setId(id);
         films.put(film.getId(), film);
+
+        return filmMapper.mapToFilmResponse(film);
     }
 }

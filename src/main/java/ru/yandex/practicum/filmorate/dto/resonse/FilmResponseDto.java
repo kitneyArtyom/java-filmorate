@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class FilmResponseDto {
-    String id;
+    Integer id;
     String name;
     String description;
     String releaseDate;
