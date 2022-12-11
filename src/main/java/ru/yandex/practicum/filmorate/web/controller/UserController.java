@@ -1,13 +1,13 @@
-package ru.yandex.practicum.filmorate.controller;
+package ru.yandex.practicum.filmorate.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.dto.request.UserRequestDto;
-import ru.yandex.practicum.filmorate.dto.resonse.UserResponseDto;
+import ru.yandex.practicum.filmorate.web.dto.request.UserRequestDto;
+import ru.yandex.practicum.filmorate.web.dto.response.UserResponseDto;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.mapper.UserMapper;
+import ru.yandex.practicum.filmorate.web.mapper.UserMapper;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;

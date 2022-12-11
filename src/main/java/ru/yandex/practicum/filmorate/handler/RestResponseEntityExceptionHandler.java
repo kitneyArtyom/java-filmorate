@@ -13,6 +13,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.StorageNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
@@ -33,7 +34,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private static final String REASONS = "reasons";
 
-    @ExceptionHandler(value = NotFoundException.class)
+    @ExceptionHandler(value = { NotFoundException.class, StorageNotFoundException.class })
     protected ResponseEntity<Object> handleNotFound(NotFoundException ex, WebRequest request) {
         log.debug("Not found error: {}", ex.getMessage(), ex);
 

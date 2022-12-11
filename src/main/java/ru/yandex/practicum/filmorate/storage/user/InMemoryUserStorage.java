@@ -4,55 +4,91 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.StorageNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    private final Map<Integer, User> userStorage;
-    private int ids;
+    private final Map<Integer, User> users;
+    private int idsCount;
 
     public InMemoryUserStorage() {
-        userStorage = new HashMap<>();
-        ids = 1;
+        users = new HashMap<>();
+        idsCount = 1;
     }
 
     @Override
-    public User create(String name, String email, String login, LocalDate birthday) {
-        User user = new User();
-        user.setId(ids++);
-        user.setName(name);
-        user.setEmail(email);
-        user.setLogin(login);
-        user.setBirthday(birthday);
+    public User create(User user) {
+        user.setId(idsCount++);
+        user.setFriendsIds(Set.of());
 
-        return userStorage.put(user.getId(), user);
+        return users.put(user.getId(), user);
     }
 
     @Override
     public User update(User user) {
-        if (!userStorage.containsKey(user.getId())) {
-            throw new StorageNotFoundException("film not found");
+        if (!users.containsKey(user.getId())) {
+            throw new StorageNotFoundException("user not found");
         }
 
-        return userStorage.put(user.getId(), user);
+        return users.put(user.getId(), user);
     }
 
     @Override
     public void delete(User user) {
-        userStorage.remove(user.getId());
+        users.remove(user.getId());
     }
 
     @Override
-    public User findById(int id) {
-        return userStorage.get(id);
+    public Optional<User> findById(int id) {
+        return Optional.ofNullable(users.get(id));
     }
 
     @Override
     public List<User> getUsers() {
-        return new ArrayList<>(userStorage.values());
+        return new ArrayList<>(users.values());
+    }
+
+    @Override
+    public List<User> getFriends(User user) {
+        if (!users.containsKey(user.getId())) {
+            throw new StorageNotFoundException("user not found");
+        }
+
+        return user.getFriendsIds().stream()
+                .map(users::get)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getSharedFriends(User user1, User user2) {
+        return user1.getFriendsIds().stream()
+                .filter(user2.getFriendsIds()::contains)
+                .map(users::get)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addFriend(User user, User friend) {
+        if (!users.containsKey(user.getId()) || users.containsKey(friend.getId())) {
+            throw new StorageNotFoundException("user not found");
+        }
+
+        user = users.get(user.getId());
+        Set<Integer> newIds = new HashSet<>(user.getFriendsIds());
+        newIds.add(friend.getId());
+        user.setFriendsIds(Set.copyOf(newIds));
+    }
+
+    @Override
+    public void deleteFriend(User user, User friend) {
+        if (!users.containsKey(user.getId()) || users.containsKey(friend.getId())) {
+            throw new StorageNotFoundException("user not found");
+        }
+
+        user = users.get(user.getId());
+        Set<Integer> newIds = new HashSet<>(user.getFriendsIds());
+        newIds.remove(friend.getId());
+        user.setFriendsIds(Set.copyOf(newIds));
     }
 }

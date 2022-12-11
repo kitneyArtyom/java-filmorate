@@ -1,8 +1,8 @@
-package ru.yandex.practicum.filmorate.mapper;
+package ru.yandex.practicum.filmorate.web.mapper;
 
 import org.mapstruct.Mapper;
-import ru.yandex.practicum.filmorate.dto.request.FilmRequestDto;
-import ru.yandex.practicum.filmorate.dto.resonse.FilmResponseDto;
+import ru.yandex.practicum.filmorate.web.dto.request.FilmRequestDto;
+import ru.yandex.practicum.filmorate.web.dto.response.FilmResponseDto;
 import ru.yandex.practicum.filmorate.model.Film;
 
 @Mapper
