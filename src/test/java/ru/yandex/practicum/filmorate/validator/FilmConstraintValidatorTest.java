@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.validator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.dto.request.FilmRequestDto;
+import ru.yandex.practicum.filmorate.web.dto.request.FilmRequestDto;
 
 import java.time.LocalDate;
 

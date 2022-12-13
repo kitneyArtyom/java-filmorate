@@ -1,7 +1,7 @@
-package ru.yandex.practicum.filmorate.validator;
+package ru.yandex.practicum.filmorate.web.validator;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.filmorate.dto.request.UserRequestDto;
+import ru.yandex.practicum.filmorate.web.dto.request.UserRequestDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

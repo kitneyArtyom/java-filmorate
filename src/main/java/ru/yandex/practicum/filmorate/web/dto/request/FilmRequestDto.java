@@ -1,7 +1,7 @@
-package ru.yandex.practicum.filmorate.dto.request;
+package ru.yandex.practicum.filmorate.web.dto.request;
 
 import lombok.Data;
-import ru.yandex.practicum.filmorate.validator.FilmConstraint;
+import ru.yandex.practicum.filmorate.web.validator.FilmConstraint;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;

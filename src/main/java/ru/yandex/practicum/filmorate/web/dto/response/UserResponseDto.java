@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.dto.resonse;
+package ru.yandex.practicum.filmorate.web.dto.response;
 
 import lombok.Data;
 

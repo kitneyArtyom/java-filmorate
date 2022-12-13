@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.validator.utils;
 
-import ru.yandex.practicum.filmorate.dto.request.FilmRequestDto;
-import ru.yandex.practicum.filmorate.dto.request.UserRequestDto;
+import ru.yandex.practicum.filmorate.web.dto.request.FilmRequestDto;
+import ru.yandex.practicum.filmorate.web.dto.request.UserRequestDto;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

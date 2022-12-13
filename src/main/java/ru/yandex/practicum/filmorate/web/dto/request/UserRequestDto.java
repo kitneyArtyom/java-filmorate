@@ -1,7 +1,7 @@
-package ru.yandex.practicum.filmorate.dto.request;
+package ru.yandex.practicum.filmorate.web.dto.request;
 
 import lombok.Data;
-import ru.yandex.practicum.filmorate.validator.UserConstraint;
+import ru.yandex.practicum.filmorate.web.validator.UserConstraint;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
