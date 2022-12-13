@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
@@ -18,11 +19,12 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User create(User user) {
+    public User add(User user) {
         user.setId(idsCount++);
         user.setFriendsIds(Set.of());
+        users.put(user.getId(), user);
 
-        return users.put(user.getId(), user);
+        return user;
     }
 
     @Override
@@ -31,7 +33,11 @@ public class InMemoryUserStorage implements UserStorage {
             throw new StorageNotFoundException("user not found");
         }
 
-        return users.put(user.getId(), user);
+        User savedUser = users.get(user.getId());
+        user.setFriendsIds(savedUser.getFriendsIds());
+
+        users.put(user.getId(), user);
+        return user;
     }
 
     @Override
@@ -69,26 +75,42 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void addFriend(User user, User friend) {
-        if (!users.containsKey(user.getId()) || users.containsKey(friend.getId())) {
+    public User addFriend(User user, User friend) {
+        if (!users.containsKey(user.getId()) || !users.containsKey(friend.getId())) {
             throw new StorageNotFoundException("user not found");
         }
 
-        user = users.get(user.getId());
-        Set<Integer> newIds = new HashSet<>(user.getFriendsIds());
-        newIds.add(friend.getId());
-        user.setFriendsIds(Set.copyOf(newIds));
+        Stream.of(List.of(user, friend), List.of(friend, user))
+                .forEach(pair -> {
+                    User _user = users.get(pair.get(0).getId());
+                    User _friend = pair.get(1);
+
+                    Set<Integer> newIds = new HashSet<>(_user.getFriendsIds());
+                    newIds.add(_friend.getId());
+                    _user.setFriendsIds(Set.copyOf(newIds));
+                    users.put(_user.getId(), _user);
+                });
+
+        return users.get(user.getId());
     }
 
     @Override
-    public void deleteFriend(User user, User friend) {
-        if (!users.containsKey(user.getId()) || users.containsKey(friend.getId())) {
+    public User deleteFriend(User user, User friend) {
+        if (!users.containsKey(user.getId()) || !users.containsKey(friend.getId())) {
             throw new StorageNotFoundException("user not found");
         }
 
-        user = users.get(user.getId());
-        Set<Integer> newIds = new HashSet<>(user.getFriendsIds());
-        newIds.remove(friend.getId());
-        user.setFriendsIds(Set.copyOf(newIds));
+        Stream.of(List.of(user, friend), List.of(friend, user))
+                .forEach(pair -> {
+                    User _user = users.get(pair.get(0).getId());
+                    User _friend = pair.get(1);
+
+                    Set<Integer> newIds = new HashSet<>(_user.getFriendsIds());
+                    newIds.remove(_friend.getId());
+                    _user.setFriendsIds(Set.copyOf(newIds));
+                    users.put(_user.getId(), _user);
+                });
+
+        return users.get(user.getId());
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserStorage {
-    User create(User user);
+    User add(User user);
 
     User update(User user);
 
@@ -20,7 +20,7 @@ public interface UserStorage {
 
     List<User> getSharedFriends(User user1, User user2);
 
-    void addFriend(User user, User friend);
+    User addFriend(User user, User friend);
 
-    void deleteFriend(User user, User friend);
+    User deleteFriend(User user, User friend);
 }

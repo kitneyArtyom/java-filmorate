@@ -21,17 +21,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film create(Film film) {
         film.setId(ids++);
-
-        return this.films.put(film.getId(), film);
+        film.setLikedUsersIds(Set.of());
+        films.put(film.getId(), film);
+        return film;
     }
 
     @Override
     public Film update(Film film) {
-        if (!this.films.containsKey(film.getId())) {
+        Optional<Film> optFilm = findById(film.getId());
+
+        if (optFilm.isEmpty()) {
             throw new StorageNotFoundException("film not found");
         }
 
-        return this.films.put(film.getId(), film);
+        film.setLikedUsersIds(optFilm.get().getLikedUsersIds());
+        films.put(film.getId(), film);
+
+        return film;
     }
 
     @Override
@@ -59,6 +65,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         Set<Integer> ids = new HashSet<>(film.getLikedUsersIds());
         ids.add(user.getId());
         film.setLikedUsersIds(Set.copyOf(ids));
+        films.put(film.getId(), film);
     }
 
     @Override
@@ -71,13 +78,20 @@ public class InMemoryFilmStorage implements FilmStorage {
         Set<Integer> ids = new HashSet<>(film.getLikedUsersIds());
         ids.remove(user.getId());
         film.setLikedUsersIds(Set.copyOf(ids));
+        films.put(film.getId(), film);
     }
 
     @Override
     public List<Film> getTopFilms(int count) {
-        return films.values().stream()
-                .sorted(Comparator.comparingInt(film -> film.getLikedUsersIds().size()))
-                .limit(count)
-                .collect(Collectors.toList());
+        if (count > 0) {
+            return films.values().stream()
+                    .sorted(Comparator.comparingInt(film -> film.getLikedUsersIds().size() * -1))
+                    .limit(count)
+                    .collect(Collectors.toList());
+        } else {
+            return films.values().stream()
+                    .sorted(Comparator.comparingInt(film -> film.getLikedUsersIds().size()))
+                    .collect(Collectors.toList());
+        }
     }
 }
