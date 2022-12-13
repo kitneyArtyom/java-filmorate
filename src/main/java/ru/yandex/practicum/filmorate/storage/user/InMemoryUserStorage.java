@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.StorageNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
@@ -30,7 +30,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User update(User user) {
         if (!users.containsKey(user.getId())) {
-            throw new StorageNotFoundException("user not found");
+            throw new EntityNotFoundException("user not found");
         }
 
         User savedUser = users.get(user.getId());
@@ -58,7 +58,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public List<User> getFriends(User user) {
         if (!users.containsKey(user.getId())) {
-            throw new StorageNotFoundException("user not found");
+            throw new EntityNotFoundException("user not found");
         }
 
         return user.getFriendsIds().stream()
@@ -77,7 +77,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User addFriend(User user, User friend) {
         if (!users.containsKey(user.getId()) || !users.containsKey(friend.getId())) {
-            throw new StorageNotFoundException("user not found");
+            throw new EntityNotFoundException("user not found");
         }
 
         Stream.of(List.of(user, friend), List.of(friend, user))
@@ -97,7 +97,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User deleteFriend(User user, User friend) {
         if (!users.containsKey(user.getId()) || !users.containsKey(friend.getId())) {
-            throw new StorageNotFoundException("user not found");
+            throw new EntityNotFoundException("user not found");
         }
 
         Stream.of(List.of(user, friend), List.of(friend, user))

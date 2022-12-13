@@ -14,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class UserService {
-    UserStorage userStorage;
+    private final    UserStorage userStorage;
 
     public UserService(InMemoryUserStorage userStorage) {
         this.userStorage = userStorage;

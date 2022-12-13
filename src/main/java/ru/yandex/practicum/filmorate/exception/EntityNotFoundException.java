@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.exception;
 
-public class StorageNotFoundException extends NotFoundException {
-    public StorageNotFoundException(String message) {
+public class EntityNotFoundException extends NotFoundException {
+    public EntityNotFoundException(String message) {
         super(message);
     }
 
-    public StorageNotFoundException(String message, Throwable cause) {
+    public EntityNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 

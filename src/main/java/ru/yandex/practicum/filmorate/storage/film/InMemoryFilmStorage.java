@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.StorageNotFoundException;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -31,7 +31,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         Optional<Film> optFilm = findById(film.getId());
 
         if (optFilm.isEmpty()) {
-            throw new StorageNotFoundException("film not found");
+            throw new EntityNotFoundException("film not found");
         }
 
         film.setLikedUsersIds(optFilm.get().getLikedUsersIds());
@@ -58,7 +58,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void addLike(Film film, User user) {
         if (!this.films.containsKey(film.getId())) {
-            throw new StorageNotFoundException("film not found");
+            throw new EntityNotFoundException("film not found");
         }
 
         film = films.get(film.getId());
@@ -71,7 +71,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void removeLike(Film film, User user) {
         if (!this.films.containsKey(film.getId())) {
-            throw new StorageNotFoundException("film not found");
+            throw new EntityNotFoundException("film not found");
         }
 
         film = films.get(film.getId());
