@@ -18,12 +18,14 @@
 
 -- Запрос списка друзей для пользователя с id=4
 
-SELECT *
+SELECT friend.*
 FROM user AS user
-INNER JOIN users_pair AS up ON up.user1_id <> up.user2_id
-                                AND (user.id = up.user1_id 
-                                    OR user.id = up.user2_id)
-INNER JOIN friend_request AS fr ON up.pair_id = fr.users_pair_id
+  INNER JOIN users_pair AS up ON up.user1_id <> up.user2_id
+  AND (user.id = up.user1_id
+    OR user.id = up.user2_id)
+  INNER JOIN friend_request AS fr ON up.pair_id = fr.users_pair_id
+  INNER JOIN user AS friend ON friend.id = up.user1_id
+                            OR friend.id = up.user2_id
 WHERE fr.status_id = 2 -- заявка в друзья принята
   AND user.id = 4 
 ```
