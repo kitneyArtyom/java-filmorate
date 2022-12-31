@@ -44,7 +44,6 @@ WHERE genre.title = "Драма"
 
 SELECT film.title AS title,
        COUNT(fl.id) AS likes
-COUNT(film_id)
 FROM film AS film
 LEFT OUTER JOIN film_like AS fl ON film.id = fl.film_id
 GROUP BY title
