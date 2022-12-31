@@ -43,7 +43,7 @@ WHERE genre.title = "Драма"
 -- Топ 100 фильмов по популярности
 
 SELECT film.title AS title,
-	   COUNT(fl.id) AS likes
+       COUNT(fl.id) AS likes
 COUNT(film_id)
 FROM film AS film
 LEFT OUTER JOIN film_like AS fl ON film.id = fl.film_id
